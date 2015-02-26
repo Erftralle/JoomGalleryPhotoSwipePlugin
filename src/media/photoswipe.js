@@ -1,4 +1,4 @@
-/*! PhotoSwipe - v4.0.5 - 2015-01-27
+/*! PhotoSwipe - v4.0.6 - 2015-02-25
 * http://photoswipe.com
 * Copyright (c) 2015 Dmitry Semenov; */
 (function (root, factory) { 
@@ -376,7 +376,6 @@ var _isOpen,
 	_currPositionIndex = 0,
 	_offset,
 	_slideSize = _getEmptyPoint(), // size of slide area, including spacing
-	_scrollChanged,
 	_itemHolders,
 	_prevItemIndex,
 	_indexDiff = 0, // difference of indexes since last content update
@@ -674,15 +673,7 @@ var _isOpen,
 	},
 
 	_onPageScroll = function() {
-		_scrollChanged = true;
-		// "close" on scroll works only on desktop devices, or when mouse is used
-		if(_options.closeOnScroll && _isOpen && (!self.likelyTouchDevice || _options.mouseUsed) ) { 
-			// if scrolled for more than 2px
-			if(Math.abs(framework.getScrollY() - _initalWindowScrollY) > 2) { 
-				_closedByScroll = true;
-				self.close();
-			}
-		}
+		self.setScrollOffset(0, framework.getScrollY());		
 	};
 	
 
@@ -772,6 +763,10 @@ var publicMethods = {
 	},	
 	isZooming: function() {
 		return _isZooming;
+	},
+	setScrollOffset: function(x,y) {
+		_offset.x = x;
+		_currentWindowScrollY = _offset.y = y;
 	},
 	applyZoomPan: function(zoomLevel,panX,panY) {
 		_panOffset.x = panX;
@@ -1183,6 +1178,7 @@ var publicMethods = {
 
 		_shout('beforeResize'); // even may be used for example to switch image sources
 
+
 		// don't re-calculate size on inital size update
 		if(_containerShiftIndex !== undefined) {
 
@@ -1194,18 +1190,20 @@ var publicMethods = {
 				holder = _itemHolders[i];
 				_setTranslateX( (i+_containerShiftIndex) * _slideSize.x, holder.el.style);
 
-				hIndex = _getLoopedId(_currentItemIndex+i-1);
+				hIndex = _currentItemIndex+i-1;
+
+				if(_options.loop && _getNumItems() > 2) {
+					hIndex = _getLoopedId(hIndex);
+				}
 
 				// update zoom level on items and refresh source (if needsUpdate)
 				item = _getItemAt( hIndex );
 
 				// re-render gallery item if `needsUpdate`,
 				// or doesn't have `bounds` (entirely new slide object)
-				if(_itemsNeedUpdate || item.needsUpdate || !item.bounds) {
+				if( item && (_itemsNeedUpdate || item.needsUpdate || !item.bounds) ) {
 
-					if(item) {
-						self.cleanSlide( item );
-					}
+					self.cleanSlide( item );
 					
 					self.setContent( holder, hIndex );
 
@@ -1216,6 +1214,7 @@ var publicMethods = {
 					}
 
 					item.needsUpdate = false;
+
 				} else if(holder.index === -1 && hIndex >= 0) {
 					// add content first time
 					self.setContent( holder, hIndex );
@@ -1241,9 +1240,8 @@ var publicMethods = {
 		_shout('resize');
 	},
 	
-	//Zoom current item to
+	// Zoom current item to
 	zoomTo: function(destZoomLevel, centerPoint, speed, easingFn, updateFn) {
-		
 		/*
 			if(destZoomLevel === 'fit') {
 				destZoomLevel = self.currItem.fitRatio;
@@ -1273,7 +1271,7 @@ var publicMethods = {
 
 		_roundPoint(destPanOffset);
 
-		//_startZoomLevel = destZoomLevel;
+		// _startZoomLevel = destZoomLevel;
 		var onUpdate = function(now) {
 			if(now === 1) {
 				_currZoomLevel = destZoomLevel;
@@ -2603,22 +2601,17 @@ var _showOrHideTimeout,
 							y: _panOffset.y
 						},
 						initialZoomLevel = _currZoomLevel,
-						scrollY = _initalWindowScrollY,
 						initalBgOpacity = _bgOpacity,
 						onUpdate = function(now) {
-							if(_scrollChanged) {
-								scrollY = framework.getScrollY();
-								_scrollChanged = false;
-							}
 							
 							if(now === 1) {
 								_currZoomLevel = destZoomLevel;
 								_panOffset.x = thumbBounds.x;
-								_panOffset.y = thumbBounds.y  - scrollY;
+								_panOffset.y = thumbBounds.y  - _currentWindowScrollY;
 							} else {
 								_currZoomLevel = (destZoomLevel - initialZoomLevel) * now + initialZoomLevel;
 								_panOffset.x = (thumbBounds.x - initialPanOffset.x) * now + initialPanOffset.x;
-								_panOffset.y = (thumbBounds.y - scrollY - initialPanOffset.y) * now + initialPanOffset.y;
+								_panOffset.y = (thumbBounds.y - _currentWindowScrollY - initialPanOffset.y) * now + initialPanOffset.y;
 							}
 							
 							_applyCurrentZoomPan();
@@ -3025,7 +3018,9 @@ _registerModule('Controller', {
 					// This is webkit progressive image loading bugfix.
 					// https://bugs.webkit.org/show_bug.cgi?id=108630
 					// https://code.google.com/p/chromium/issues/detail?id=404547
-					item.img.style.webkitBackfaceVisibility = 'hidden';
+					if(item.img) {
+						item.img.style.webkitBackfaceVisibility = 'hidden';
+					}
 
 					// check if holder hasn't changed while image was loading
 					if(holder && holder.index === index ) {
@@ -3320,6 +3315,15 @@ _registerModule('DesktopZoom', {
 			if(_currZoomLevel <= self.currItem.fitRatio) {
 				if(!_options.closeOnScroll) {
 					e.preventDefault();
+				} else {
+
+					// close PhotoSwipe
+					// if browser supports transforms & scroll changed enough
+					if( _transformKey && Math.abs(e.deltaY) > 2 ) {
+						_closedByScroll = true;
+						self.close();
+					}
+
 				}
 				return true;
 			}
@@ -3355,7 +3359,7 @@ _registerModule('DesktopZoom', {
 		},
 
 		toggleDesktopZoom: function(centerPoint) {
-			centerPoint = centerPoint || {x:_viewportSize.x/2, y:_viewportSize.y/2 + _initalWindowScrollY };
+			centerPoint = centerPoint || {x:_viewportSize.x/2, y:_viewportSize.y/2 + _currentWindowScrollY };
 
 			var doubleTapZoomLevel = _options.getDoubleTapZoom(true, self.currItem);
 			var zoomOut = _currZoomLevel === doubleTapZoomLevel;
