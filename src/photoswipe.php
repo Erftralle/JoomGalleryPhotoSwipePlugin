@@ -77,7 +77,6 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
     $this->loadLanguage();
 
     $this->_doc       = JFactory::getDocument();
-    $this->_jg_config = JoomConfig::getInstance();
     $this->_jg_ambit  = JoomAmbit::getInstance();
 
     // Load jQuery in 'noConflict' mode
@@ -170,7 +169,21 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
       $this->_isMobile = $detect->isMobile();
     }
 
-    if(!$this->_isMobile && $this->params->get('cfg_openimage') != $this->title)
+
+    // Check whether we are in JoomGallery detail view
+    $isDetailView = JFactory::getApplication()->input->getCmd('view') === 'detail' ? true : false;
+
+    $showMeInDetailView = false;
+
+    if(    $isDetailView
+        && !$this->_isMobile
+        && $this->params->get('cfg_openimage') == 0
+        && $this->_jg_config->get('jg_bigpic_open') === $this->title)
+    {
+      $showMeInDetailView = true;
+    }
+
+    if(!$this->_isMobile && $this->params->get('cfg_openimage') != $this->title && !$showMeInDetailView)
     {
       $link = JHtml::_('joomgallery.openimage', $this->params->get('cfg_openimage'), $image, $type, $group);
 
