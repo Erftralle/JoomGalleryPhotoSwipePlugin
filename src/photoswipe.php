@@ -169,10 +169,14 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
       $this->_isMobile = $detect->isMobile();
     }
 
+    $this->_jg_config = JoomConfig::getInstance();
 
     // Check whether we are in JoomGallery detail view
     $isDetailView = JFactory::getApplication()->input->getCmd('view') === 'detail' ? true : false;
 
+    // Check for non mobile devices whether this popup box is selected in JoomGallery's category
+    // view with the option set to open the detail view for non mobile devices. If that is the
+    // case and this box is also selected to show the original images in detail view set a helper flag.
     $showMeInDetailView = false;
 
     if(    $isDetailView
