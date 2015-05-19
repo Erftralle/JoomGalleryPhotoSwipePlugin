@@ -31,8 +31,8 @@
   $(document).ready(function(){ 
     
     $('body').append('<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true"/>');
-    $( ".pswp" ).append('<div class="pswp__bg"/>');
-    $( ".pswp" ).append('<div class="pswp__scroll-wrap"/>');
+    $(".pswp").append('<div class="pswp__bg"/>');
+    $(".pswp").append('<div class="pswp__scroll-wrap"/>');
     $(".pswp__scroll-wrap").append('<div class="pswp__container"/>');
     $(".pswp__container").append('<div class="pswp__item"/>');
     $(".pswp__container").append('<div class="pswp__item"/>');
@@ -69,12 +69,25 @@
           h: parseInt(size[1], 10),
           title: $(this).attr('data-title')
         };
-        items.push(item);
 
-        if(item.src === href) {
-          index = items.length - 1;
+        // Check for duplicates
+        var isDuplicate = false;
+
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].src === item.src) {
+            isDuplicate = true;
+            break;
+          }
+        }          
+
+        if(!isDuplicate) {
+          items.push(item);
+
+          if(item.src === href) {
+            index = items.length - 1;
+          }
         }
-        
+
       });
       
       options = {
