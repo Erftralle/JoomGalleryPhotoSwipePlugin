@@ -66,6 +66,10 @@
           <option value="0">PLG_JOOMGALLERY_PHOTOSWIPE_NO_LBL</option>
           <option value="1">PLG_JOOMGALLERY_PHOTOSWIPE_YES_LBL</option>
         </field>
+        <field name="cfg_shareshow" class="btn-group" type="radio" default="0" label="PLG_JOOMGALLERY_PHOTOSWIPE_SHARESHOW_LBL" description="PLG_JOOMGALLERY_PHOTOSWIPE_SHARESHOW_DESC">
+          <option value="0">PLG_JOOMGALLERY_PHOTOSWIPE_NO_LBL</option>
+          <option value="1">PLG_JOOMGALLERY_PHOTOSWIPE_YES_LBL</option>
+        </field>
         <!--    
         <field name="cfg_captionandtoolbarautohidedelay" class="validate-numeric" type="text" default="5000" label="PLG_JOOMGALLERY_PHOTOSWIPE_CPAUTOHIDEDELAY_LBL" description="PLG_JOOMGALLERY_PHOTOSWIPE_CPAUTOHIDEDELAY_DESC" required="true"/>          
         <field name="cfg_captionandtoolbarflipposition" class="btn-group" type="radio" default="0" label="PLG_JOOMGALLERY_PHOTOSWIPE_CPFLIPPOSITION_LBL" description="PLG_JOOMGALLERY_PHOTOSWIPE_CPFLIPPOSITION_DESC">

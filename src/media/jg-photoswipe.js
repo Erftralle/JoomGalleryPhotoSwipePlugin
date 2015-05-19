@@ -94,11 +94,16 @@
         index: index,
         loop: jg_pswp_options.loop,
         history: false,
-        shareEl: false,
+        shareEl: jg_pswp_options.shareEl,
         captionEl: jg_pswp_options.captionEl,
         closeOnScroll: false,
         escKey: true,
         arrowKeys : true,
+        shareButtons: [
+                       {id:'facebook', label:'Share on Facebook', url:'https://www.facebook.com/sharer/sharer.php?u={{url}}'},
+                       {id:'twitter', label:'Tweet', url:'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'},
+                       {id:'pinterest', label:'Pin it', url:'http://www.pinterest.com/pin/create/button/' + '?url={{url}}&media={{image_url}}&description={{text}}'}
+                      ]        
       };
       
       pswp = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);

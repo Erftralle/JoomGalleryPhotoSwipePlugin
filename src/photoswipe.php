@@ -99,6 +99,7 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
     // $autoStartSlideshow                = $this->params->get('cfg_slideautostart') ? 'true' : 'false';
     $captionEl                         = $this->params->get('cfg_captionshow') ? 'true' : 'false';
     // $cfg_captionandtoolbarflipposition = $this->params->get('cfg_captionandtoolbarflipposition') ? 'true' : 'false';
+    $shareEl                           = $this->params->get('cfg_shareshow') ? 'true' : 'false';
 
 //     $options  = "                                        {\n";
 //     $options .= "                                          preventSlideshow: ".$preventSlideshow.",\n";
@@ -118,7 +119,8 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
 
     $options  = "var jg_pswp_options = {\n";
     $options .= "  loop: ".$loop.",\n";
-    $options .= "  captionEl: ".$captionEl."\n";
+    $options .= "  captionEl: ".$captionEl.",\n";
+    $options .= "  shareEl: ".$shareEl."\n";
     $options .= "};\n";
 
     $this->_doc->addScriptDeclaration($options);
