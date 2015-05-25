@@ -246,5 +246,10 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
     $attribs['data-group']   = $group;
     $attribs['data-title']   = $data_title;
     $attribs['data-size']    = $data_size;
+
+    if($this->params->get('cfg_shareshow') && $this->params->get('cfg_sharepageurl') == 1)
+    {
+      $attribs['data-share_page_url'] = JUri::getInstance()->toString(array('scheme', 'host', 'port')) . JRoute::_('index.php?option=' . _JOOM_OPTION . '&view=detail&id=' . $image->id . $this->_jg_ambit->getItemid(true));
+    }
   }
 }

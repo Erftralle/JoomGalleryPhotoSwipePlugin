@@ -67,7 +67,8 @@
           src: $(this).attr('href'),
           w: parseInt(size[0], 10),
           h: parseInt(size[1], 10),
-          title: $(this).attr('data-title')
+          title: $(this).attr('data-title'),
+          share_page_url: $(this).attr('data-share_page_url')
         };
 
         // Check for duplicates
@@ -103,7 +104,10 @@
                        {id:'facebook', label:'Share on Facebook', url:'https://www.facebook.com/sharer/sharer.php?u={{url}}'},
                        {id:'twitter', label:'Tweet', url:'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'},
                        {id:'pinterest', label:'Pin it', url:'http://www.pinterest.com/pin/create/button/' + '?url={{url}}&media={{image_url}}&description={{text}}'}
-                      ]        
+                      ],
+        getPageURLForShare: function( /* shareButtonData */ ) {
+          return pswp.currItem.share_page_url || window.location.href;
+        }
       };
       
       pswp = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
