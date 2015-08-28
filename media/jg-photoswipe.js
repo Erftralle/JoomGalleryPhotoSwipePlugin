@@ -109,6 +109,10 @@
           return pswp.currItem.share_page_url || window.location.href;
         }
       };
+
+      if(jg_pswp_options.isMobile) {
+        options.shareButtons.push({id:'whatsapp', label:'Share on WhatsApp', url:'whatsapp://send?text={{url}}'});
+      }
       
       pswp = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
       pswp.init();

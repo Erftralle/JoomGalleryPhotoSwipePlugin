@@ -120,7 +120,8 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
     $options  = "var jg_pswp_options = {\n";
     $options .= "  loop: ".$loop.",\n";
     $options .= "  captionEl: ".$captionEl.",\n";
-    $options .= "  shareEl: ".$shareEl."\n";
+    $options .= "  shareEl: ".$shareEl.",\n";
+    $options .= "  isMobile: ".($this->_isMobile ? 'true' : 'false')."\n";
     $options .= "};\n";
 
     $this->_doc->addScriptDeclaration($options);
