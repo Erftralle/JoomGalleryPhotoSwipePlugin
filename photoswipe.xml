@@ -94,4 +94,8 @@
       -->
     </fields>
   </config>
+  <updateservers>
+    <!-- Note: No spaces or linebreaks allowed between the server tags -->
+    <server type="extension" name="JoomGalleryPhotoSwipePlugin Update Site">https://raw.githubusercontent.com/erftralle/joomgalleryphotoswipeplugin/master/extension.xml</server>
+  </updateservers>  
 </extension>
