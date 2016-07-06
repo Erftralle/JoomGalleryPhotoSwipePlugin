@@ -238,7 +238,15 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
             $data_title .= ' :: ';
           }
         }
-        $data_title .= htmlspecialchars(strip_tags($image->imgtext));
+
+        if($this->_jg_config->get('jg_show_description_in_popup') == 2)
+        {
+          $data_title .= htmlspecialchars(strip_tags($image->imgtext));
+        }
+        else
+        {
+          $data_title .= htmlspecialchars($image->imgtext);
+        }
       }
     }
 
