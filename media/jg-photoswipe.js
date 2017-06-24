@@ -68,7 +68,8 @@
           w: parseInt(size[0], 10),
           h: parseInt(size[1], 10),
           title: $(this).attr('data-title'),
-          share_page_url: $(this).attr('data-share_page_url')
+          share_page_url: $(this).attr('data-share_page_url'),
+          share_download_url: $(this).attr('data-share_download_url')
         };
 
         // Check for duplicates
@@ -107,23 +108,33 @@
                       ],
         getPageURLForShare: function( /* shareButtonData */ ) {
           return pswp.currItem.share_page_url || window.location.href;
+        },
+        getImageURLForShare: function(shareButtonData) {
+          if(shareButtonData.id === 'download') {
+            return pswp.currItem.share_download_url;
+          }
+          return pswp.currItem.src || '';
         }
       };
 
       if(jg_pswp_options.isMobile) {
         options.shareButtons.push({id:'whatsapp', label:'Share on WhatsApp', url:'whatsapp://send?text={{url}}'});
       }
-      
+
+      if(jg_pswp_options.shareEl && jg_pswp_options.downloadAllowed) {
+        options.shareButtons.push({id:'download', label:'Download', url:'{{raw_image_url}}', download:true});
+      }
+
       pswp = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
       pswp.init();
-      
+
       var photoswipe_onkeydownsave = window.document.onkeydown;
       window.document.onkeydown = null;
-      
+
       pswp.listen('destroy', function() {
         window.document.onkeydown = photoswipe_onkeydownsave;
       });
-      
+
       return false;
     });
   });

@@ -67,6 +67,13 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
   private $_isMobile = null;
 
   /**
+   * Flag, whether the download of images is allowed
+   *
+   * @var     boolean
+   */
+  private $_downloadAllowed = null;
+
+  /**
    * Initializes the box by adding all necessary image group independent JavaScript and CSS files.
    * This is done only once per page load.
    *
@@ -121,6 +128,7 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
     $options .= "  loop: ".$loop.",\n";
     $options .= "  captionEl: ".$captionEl.",\n";
     $options .= "  shareEl: ".$shareEl.",\n";
+    $options .= "  downloadAllowed: ".($this->_downloadAllowed ? 'true' : 'false').",\n";
     $options .= "  isMobile: ".($this->_isMobile ? 'true' : 'false')."\n";
     $options .= "};\n";
 
@@ -188,6 +196,14 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
         && $this->_jg_config->get('jg_bigpic_open') === $this->title)
     {
       $showMeInDetailView = true;
+    }
+
+    if(is_null($this->_downloadAllowed)) {
+      $this->_downloadAllowed = false;
+
+      if($this->_jg_config->get('jg_download') && (JFactory::getUser()->get('id') || $this->_jg_config->get('jg_download_unreg'))) {
+        $this->_downloadAllowed = true;
+      }
     }
 
     if(!$this->_isMobile && $this->params->get('cfg_openimage') != $this->title && !$showMeInDetailView)
@@ -259,6 +275,11 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
     if($this->params->get('cfg_shareshow') && $this->params->get('cfg_sharepageurl') == 1)
     {
       $attribs['data-share_page_url'] = JUri::getInstance()->toString(array('scheme', 'host', 'port')) . JRoute::_('index.php?option=' . _JOOM_OPTION . '&view=detail&id=' . $image->id . $this->_jg_ambit->getItemid(true));
+    }
+
+    // Download URL
+    if($this->params->get('cfg_shareshow') && $this->_downloadAllowed) {
+      $attribs['data-share_download_url'] = JUri::getInstance()->toString(array('scheme', 'host', 'port')) . JRoute::_('index.php?option=' . _JOOM_OPTION . '&task=download&id=' . $image->id);
     }
   }
 }
