@@ -278,7 +278,8 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
     }
 
     // Download URL
-    if($this->params->get('cfg_shareshow') && $this->_downloadAllowed) {
+    if($this->params->get('cfg_shareshow') && $this->_downloadAllowed)
+    {
       $attribs['data-share_download_url'] = JUri::getInstance()->toString(array('scheme', 'host', 'port')) . JRoute::_('index.php?option=' . _JOOM_OPTION . '&task=download&id=' . $image->id);
     }
   }
