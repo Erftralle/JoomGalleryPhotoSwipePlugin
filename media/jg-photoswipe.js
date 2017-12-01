@@ -113,7 +113,22 @@
           if(shareButtonData.id === 'download') {
             return pswp.currItem.share_download_url;
           }
-          return pswp.currItem.src || '';
+
+          if(pswp.currItem.src) {
+            var url = pswp.currItem.src;
+
+            if(url.indexOf(window.location.hostname) == (-1)) {
+              url = window.location.hostname + url; 
+            }
+
+            if(url.indexOf(window.location.protocol) == (-1)) {
+              url = window.location.protocol + '//' + url;
+            }
+
+            return url;
+          }
+
+          return '';
         }
       };
 
