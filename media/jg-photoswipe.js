@@ -5,7 +5,7 @@
  * (http://www.photoswipe.com/) for displaying images.
  *
  * By:        Erftralle, based on JoomPhotoswipe by JoomGallery::ProjectTeam 
- * Copyright: (c) 2015 Erftralle, (c) 2013 - 2014 JoomGallery::ProjectTeam
+ * Copyright: (c) 2015 - 2017 Erftralle, (c) 2013 - 2014 JoomGallery::ProjectTeam
  * License:   This software is released under the GNU/GPL License
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -44,6 +44,9 @@
     $(".pswp__top-bar").append('<button class="pswp__button pswp__button--share" title="Share"/>');
     $(".pswp__top-bar").append('<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"/>');
     $(".pswp__top-bar").append('<button class="pswp__button pswp__button--zoom" title="Zoom in/out"/>');
+    if(!jg_pswp_options.preventSlideshow) {
+      $(".pswp__top-bar").append('<button class="pswp__button pswp__button--playpause" title="Play Slideshow"/>');
+    }
     $(".pswp__top-bar").append('<div class="pswp__preloader"/>');
     $(".pswp__preloader").append('<div class="pswp__preloader__icn"/>');
     $(".pswp__preloader__icn").append('<div class="pswp__preloader__cut"/>');
@@ -58,9 +61,9 @@
     $("a[rel^='PhotoSwipe-v4plus']").on("click", function(event) {
       
       var pswpElement = document.querySelectorAll('.pswp')[0];
-      var pswp, options, items = [], index = 0;
+      var pswp = null, options, items = [], index = 0;
       var href = $(this).attr('href');
-      
+
       $('a[data-group=' + $(this).attr('data-group') + ']').each(function() {
         size = $(this).attr('data-size').split('x');
         var item = {
@@ -89,8 +92,53 @@
             index = items.length - 1;
           }
         }
-
       });
+ 
+      // Slideshow variables
+      var ssRunning = false, 
+          ssOnce = false,
+          timerId = null;
+          ssButtonClass = '.pswp__button--playpause';
+
+      // Slideshow management
+      if(!jg_pswp_options.preventSlideshow) {    
+        $(ssButtonClass).on('click', function(e) {
+            // Toggle slideshow on/off
+            setSlideshowState(this, !ssRunning);
+        });
+      }
+      
+      // Clear current slideshow timer
+      function clearCurrentSlideshowTimer() {
+        if(!!timerId) {
+          clearTimeout(timerId);
+          timerId = null;
+        }        
+      }
+      
+      // Slideshow state
+      function setSlideshowState(el, running) {
+        if(running) {
+          timerId = setTimeout(gotoNextSlide, jg_pswp_options.autoStartSlideshow ? jg_pswp_options.slideshowDelay : 1000);
+        }
+        else {
+          clearCurrentSlideshowTimer();
+        }
+        
+        var title = running ? "Pause Slideshow" : "Play Slideshow";
+        
+        // Change icons defined in CSS
+        $(el).removeClass(running ? "play" : "pause").addClass(running ? "pause" : "play").prop('title', title);
+        ssRunning = running;
+      }
+
+      function gotoNextSlide() {
+        if(ssRunning && !!pswp) {
+          ssOnce = true;
+          pswp.next();
+          // Start timeout for next slide in PhotoSwipes 'afterChange' listener
+        }
+      }
       
       options = {
         index: index,
@@ -140,16 +188,31 @@
         options.shareButtons.push({id:'download', label:'Download', url:'{{raw_image_url}}', download:true});
       }
 
-      pswp = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-      pswp.init();
+      pswp = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
 
+      if(!jg_pswp_options.preventSlideshow) {
+        setSlideshowState(ssButtonClass, jg_pswp_options.autoStartSlideshow);
+
+        // Start timer for the next slide in slideshow after prior image has loaded
+        pswp.listen('afterChange', function() { 
+          if(ssRunning && ssOnce) {
+            ssOnce = false;
+            timerId = setTimeout(gotoNextSlide, jg_pswp_options.slideshowDelay);
+          }
+        });
+      }
+      
       var photoswipe_onkeydownsave = window.document.onkeydown;
       window.document.onkeydown = null;
 
       pswp.listen('destroy', function() {
         window.document.onkeydown = photoswipe_onkeydownsave;
+        clearCurrentSlideshowTimer();
+        pswp = null;
       });
 
+      pswp.init();
+      
       return false;
     });
   });

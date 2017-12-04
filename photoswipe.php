@@ -9,7 +9,7 @@ defined('_JEXEC') or die('Restricted access');
  * (http://www.photoswipe.com/) for displaying images.
  *
  * By:        Erftralle, based on JoomPhotoswipe by JoomGallery::ProjectTeam
- * Copyright: (c) 2015 Erftralle, (c) 2013 - 2014 JoomGallery::ProjectTeam
+ * Copyright: (c) 2015 - 2017 Erftralle, (c) 2013 - 2014 JoomGallery::ProjectTeam
  * License:   This software is released under the GNU/GPL License
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -93,6 +93,11 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
     $this->_doc->addStyleSheet(JURI::root().'media/plg_joomgallery_photoswipe/photoswipe.css');
     $this->_doc->addStyleSheet(JURI::root().'media/plg_joomgallery_photoswipe/default-skin/default-skin.css');
 
+    if($this->params->get('cfg_operationmode', 0))
+    {
+      $this->_doc->addStyleSheet(JURI::root().'media/plg_joomgallery_photoswipe/default-skin/jg-photoswipe.css');
+    }
+
     // Add PhotoSwipe javascript
     $this->_doc->addScript(JURI::root().'media/plg_joomgallery_photoswipe/photoswipe'.(JFactory::getConfig()->get('debug') ? '' : '.min').'.js');
     $this->_doc->addScript(JURI::root().'media/plg_joomgallery_photoswipe/photoswipe-ui-default'.(JFactory::getConfig()->get('debug') ? '' : '.min').'.js');
@@ -101,12 +106,12 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
     $this->_doc->addScript(JURI::root().'media/plg_joomgallery_photoswipe/jg-photoswipe.js');
 
     // Add PhotoSwipe options
-    // $preventSlideshow                  = $this->params->get('cfg_operationmode') ? 'false' : 'true';
-    $loop                              = $this->params->get('cfg_loop') ? 'true' : 'false';
-    // $autoStartSlideshow                = $this->params->get('cfg_slideautostart') ? 'true' : 'false';
-    $captionEl                         = $this->params->get('cfg_captionshow') ? 'true' : 'false';
+    $preventSlideshow = $this->params->get('cfg_operationmode', 0) ? 'false' : 'true';
+    $loop                              = $this->params->get('cfg_loop', 1) ? 'true' : 'false';
+    $autoStartSlideshow                = $this->params->get('cfg_slideautostart', 0) ? 'true' : 'false';
+    $captionEl                         = $this->params->get('cfg_captionshow', 1) ? 'true' : 'false';
     // $cfg_captionandtoolbarflipposition = $this->params->get('cfg_captionandtoolbarflipposition') ? 'true' : 'false';
-    $shareEl                           = $this->params->get('cfg_shareshow') ? 'true' : 'false';
+    $shareEl                           = $this->params->get('cfg_shareshow', 0) ? 'true' : 'false';
 
 //     $options  = "                                        {\n";
 //     $options .= "                                          preventSlideshow: ".$preventSlideshow.",\n";
@@ -125,7 +130,10 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
 //     $options .= "                                        });\n";
 
     $options  = "var jg_pswp_options = {\n";
+    $options .= "  preventSlideshow: ".$preventSlideshow.",\n";
     $options .= "  loop: ".$loop.",\n";
+    $options .= "  autoStartSlideshow: ".$autoStartSlideshow.",\n";
+    $options .= "  slideshowDelay: ".$this->params->get('cfg_slideinterval', 3000).",\n";
     $options .= "  captionEl: ".$captionEl.",\n";
     $options .= "  shareEl: ".$shareEl.",\n";
     $options .= "  downloadAllowed: ".($this->_downloadAllowed ? 'true' : 'false').",\n";

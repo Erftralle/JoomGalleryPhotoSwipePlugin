@@ -29,6 +29,11 @@
     <filename>default-skin/default-skin.png</filename>
     <filename>default-skin/default-skin.svg</filename>
     <filename>default-skin/preloader.gif</filename>
+    <filename>default-skin/jg-photoswipe.css</filename>
+    <filename>default-skin/pause-wh.png</filename>
+    <filename>default-skin/pause-wh.svg</filename>
+    <filename>default-skin/play-wh.png</filename>
+    <filename>default-skin/play-wh.svg</filename>
   </media>
   <languages>
     <language tag="en-GB">language/en-GB/en-GB.plg_joomgallery_photoswipe.ini</language>
@@ -41,11 +46,11 @@
       <fieldset name="basic">
         <field name="cfg_openimage" type="openimage" default="0" label="PLG_JOOMGALLERY_PHOTOSWIPE_OPENIMAGE_LBL" description="PLG_JOOMGALLERY_PHOTOSWIPE_OPENIMAGE_DESC" detail="true" defaultMethod="false" prefix="PLG_JOOMGALLERY_PHOTOSWIPE_OPENIMAGE_">
         </field>
-        <!--
-        <field name="cfg_operationmode" type="list" default="1" label="PLG_JOOMGALLERY_PHOTOSWIPE_OPERATIONMODE_LBL" description="PLG_JOOMGALLERY_PHOTOSWIPE_OPERATIONMODE_DESC">
+        <field name="cfg_operationmode" type="list" default="0" label="PLG_JOOMGALLERY_PHOTOSWIPE_OPERATIONMODE_LBL" description="PLG_JOOMGALLERY_PHOTOSWIPE_OPERATIONMODE_DESC">
           <option value="0">PLG_JOOMGALLERY_PHOTOSWIPE_OPERATIONMODE_STANDARD_LBL</option>
           <option value="1">PLG_JOOMGALLERY_PHOTOSWIPE_OPERATIONMODE_SLIDESHOW_LBL</option>
         </field>
+        <!--
         <field name="cfg_imagescalemethod" type="list" default="fit" label="PLG_JOOMGALLERY_PHOTOSWIPE_IMAGESCALEMETHOD_LBL" description="PLG_JOOMGALLERY_PHOTOSWIPE_IMAGESCALEMETHOD_DESC">
           <option value="fit">PLG_JOOMGALLERY_PHOTOSWIPE_IMAGESCALEMETHOD_FIT_LBL</option>
           <option value="fitNoUpscale">PLG_JOOMGALLERY_PHOTOSWIPE_IMAGESCALEMETHOD_FITNOUPSCALE_LBL</option>
@@ -83,15 +88,13 @@
         </field>
         -->
       </fieldset>
-      <!--
       <fieldset name="PLG_JOOMGALLERY_PHOTOSWIPE_SLIDESHOW_PARAMETER_LBL" label="PLG_JOOMGALLERY_PHOTOSWIPE_SLIDESHOW_PARAMETER_LBL">
         <field name="cfg_slideinterval" class="validate-numeric" type="text" default="3000" label="PLG_JOOMGALLERY_PHOTOSWIPE_SLIDEINTERVAL_LBL" description="PLG_JOOMGALLERY_PHOTOSWIPE_SLIDEINTERVAL_DESC" required="true"/>
-        <field name="cfg_slideautostart" class="btn-group" type="radio" default="1" label="PLG_JOOMGALLERY_PHOTOSWIPE_SLIDEAUTOSTART_LBL" description="PLG_JOOMGALLERY_PHOTOSWIPE_SLIDEAUTOSTART_DESC">
+        <field name="cfg_slideautostart" class="btn-group" type="radio" default="0" label="PLG_JOOMGALLERY_PHOTOSWIPE_SLIDEAUTOSTART_LBL" description="PLG_JOOMGALLERY_PHOTOSWIPE_SLIDEAUTOSTART_DESC">
           <option value="0">PLG_JOOMGALLERY_PHOTOSWIPE_NO_LBL</option>
           <option value="1">PLG_JOOMGALLERY_PHOTOSWIPE_YES_LBL</option>
         </field>    
       </fieldset>
-      -->
     </fields>
   </config>
   <updateservers>
