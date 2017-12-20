@@ -101,8 +101,17 @@
           ssButtonClass = '.pswp__button--playpause';
 
       // Slideshow management
-      if(!jg_pswp_options.preventSlideshow) {    
-        $(ssButtonClass).on('click', function(e) {
+      if(!jg_pswp_options.preventSlideshow) {  
+        var clickEvent = 'click';
+        if('onpointerdown' in window) {
+          // Use 'pointerdown' if pointerEvent API is supported
+          clickEvent = 'pointerdown';
+        } else if('ontouchstart' in window) {
+          // Use 'touchstart' if touch device
+          clickEvent = 'touchstart';
+        }
+        
+        $(ssButtonClass).on(clickEvent, function(e) {
             // Toggle slideshow on/off
             setSlideshowState(this, !ssRunning);
         });
