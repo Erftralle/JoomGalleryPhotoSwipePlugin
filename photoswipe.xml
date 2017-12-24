@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="joomgallery" version="3.0" method="upgrade">
   <name>plg_joomgallery_photoswipe</name>
-  <creationDate>10.12.2017</creationDate>
+  <creationDate>24.12.2017</creationDate>
   <author>Erftralle</author>
   <authorEmail>Erftralle@users.noreply.github.com</authorEmail>  
   <authorUrl>https://github.com/Erftralle</authorUrl>
   <copyright>(c) 2015 - 2017 Erftralle, (c) 2013 - 2014 JoomGallery::ProjectTeam</copyright>
   <license>This software is released under the GNU/GPL License</license>
-  <version>1.7</version>
+  <version>1.8</version>
   <description>PLG_JOOMGALLERY_PHOTOSWIPE_DESC</description>
   <files>
     <filename plugin="photoswipe">photoswipe.php</filename>
