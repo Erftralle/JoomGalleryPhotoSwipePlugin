@@ -58,7 +58,7 @@
     $(".pswp__ui").append('<div class="pswp__caption"/>');
     $(".pswp__caption").append('<div class="pswp__caption__center"/>');
     
-    $("a[rel^='PhotoSwipe-v4plus']").on("click", function(event) {
+    $("a[data-rel^='PhotoSwipe-v4plus']").on("click", function(event) {
       
       var pswpElement = document.querySelectorAll('.pswp')[0];
       var pswp = null, options, items = [], index = 0;

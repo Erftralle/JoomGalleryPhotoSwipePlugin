@@ -275,7 +275,7 @@ class plgJoomGalleryPhotoSwipe extends JoomOpenImagePlugin
     }
 
     // Prepare the link attributes
-    $attribs['rel']          = $this->title.'-'.$group;
+    $attribs['data-rel']     = $this->title.'-'.$group;
     $attribs['data-group']   = $group;
     $attribs['data-title']   = $data_title;
     $attribs['data-size']    = $data_size;
