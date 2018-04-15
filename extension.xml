@@ -4,12 +4,12 @@
     <description>This Plugin integrates PhotoSwipe (4.0+) into JoomGallery.</description>
     <element>photoswipe</element>
     <type>plugin</type>
-    <version>1.8</version>
-    <infourl title="JoomGalleryPhotoSwipePlugin">https://github.com/Erftralle/JoomGalleryPhotoSwipePlugin/releases/tag/v1.8</infourl>
+    <version>1.9</version>
+    <infourl title="JoomGalleryPhotoSwipePlugin">https://github.com/Erftralle/JoomGalleryPhotoSwipePlugin/releases/tag/v1.9</infourl>
     <folder>joomgallery</folder>
     <client>0</client>
     <downloads>
-      <downloadurl type="full" format="zip">https://github.com/Erftralle/JoomGalleryPhotoSwipePlugin/releases/download/v1.8/JoomGalleryPhotoSwipePlugin-v1.8.zip</downloadurl>
+      <downloadurl type="full" format="zip">https://github.com/Erftralle/JoomGalleryPhotoSwipePlugin/releases/download/v1.9/JoomGalleryPhotoSwipePlugin-v1.9.zip</downloadurl>
     </downloads>
     <tags>
       <tag>stable</tag>
